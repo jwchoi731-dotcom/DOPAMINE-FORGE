@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dopamine Forge</title>
+</head>
+<body style="background:#111;color:white;text-align:center;font-family:sans-serif">
+
+<h1>⚔️ Dopamine Forge</h1>
+
+<div id="gold">Gold: 5000</div>
+
+<button id="hunt">사냥</button>
+
+<script>
+let gold = 5000;
+
+document.getElementById("hunt").addEventListener("click", () => {
+  gold += 100;
+  document.getElementById("gold").innerText = "Gold: " + gold;
+  alert("+100 골드!");
+});
+</script>
+
+</body>
+</html>
