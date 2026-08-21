@@ -4,19 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Dopamine Forge v1</title>
+<title>Dopamine Forge V3</title>
 
 <style>
 
 body{
 margin:0;
-background:#0d1228;
+background:#0b1020;
 color:white;
 font-family:Arial,sans-serif;
 }
 
 header{
-background:#1b2550;
+background:#18203a;
 padding:15px;
 text-align:center;
 font-size:28px;
@@ -24,47 +24,68 @@ font-weight:bold;
 }
 
 .card{
-background:#1f2c5c;
+background:#1a2342;
 margin:10px;
 padding:15px;
-border-radius:15px;
+border-radius:16px;
 }
 
 .weapon{
-font-size:90px;
+font-size:100px;
 text-align:center;
 }
 
-.stats{
+.center{
 text-align:center;
-line-height:2;
 }
 
 .grid{
 display:grid;
 grid-template-columns:1fr 1fr;
-gap:10px;
+gap:8px;
 }
 
 button{
 height:60px;
 border:none;
 border-radius:12px;
-font-size:16px;
-font-weight:bold;
 background:#4f7cff;
 color:white;
+font-size:16px;
+font-weight:bold;
+}
+
+button:active{
+transform:scale(.97);
+}
+
+.bar{
+height:24px;
+background:#333;
+border-radius:20px;
+overflow:hidden;
+}
+
+.fill{
+height:100%;
+background:linear-gradient(
+90deg,
+#00ff66,
+#aaff00
+);
+width:100%;
 }
 
 #popup{
 position:fixed;
-top:45%;
 left:50%;
+top:45%;
 transform:translate(-50%,-50%);
 font-size:36px;
 font-weight:bold;
-opacity:0;
 pointer-events:none;
+opacity:0;
+z-index:999;
 }
 
 .show{
@@ -72,27 +93,49 @@ animation:pop 1s;
 }
 
 @keyframes pop{
-0%{opacity:0;transform:translate(-50%,-50%) scale(.5);}
-40%{opacity:1;transform:translate(-50%,-50%) scale(1.4);}
-100%{opacity:0;transform:translate(-50%,-70%) scale(1);}
+
+0%{
+opacity:0;
+transform:
+translate(-50%,-50%)
+scale(.5);
+}
+
+40%{
+opacity:1;
+transform:
+translate(-50%,-50%)
+scale(1.4);
+}
+
+100%{
+opacity:0;
+transform:
+translate(-50%,-70%)
+scale(1);
+}
+
 }
 
 #log{
-height:180px;
+height:200px;
 overflow:auto;
+font-size:14px;
 }
 
-.bar{
-height:22px;
-background:#333;
-border-radius:20px;
-overflow:hidden;
+.weapon-card{
+padding:8px;
+border-radius:10px;
+margin:4px 0;
+background:#27325c;
 }
 
-.fill{
-width:100%;
-height:100%;
-background:lime;
+.legendary{
+border:2px solid orange;
+}
+
+.mythic{
+border:2px solid violet;
 }
 
 </style>
@@ -100,21 +143,68 @@ background:lime;
 
 <body>
 
-<header>⚔️ Dopamine Forge</header>
+<header>
+⚔️ Dopamine Forge V3
+</header>
 
 <div class="card">
 
-<div id="weapon" class="weapon">🗡️</div>
+<div id="weapon"
+class="weapon">
+🗡️
+</div>
 
-<div class="stats">
+<div class="center">
 
-강화 +<span id="upgrade">0</span><br>
+<h2>
+강화 +<span id="upgrade">0</span>
+</h2>
 
-전투력 <span id="power">10</span><br>
+<div>
+레벨 :
+<span id="level">1</span>
+</div>
 
-💰 <span id="gold">5000</span>
+<div>
+EXP :
+<span id="exp">0</span>
+/
+<span id="maxExp">100</span>
+</div>
+
+<br>
+
+<div>
+전투력 :
+<span id="power">10</span>
+</div>
+
+<br>
+
+<div>
+💰
+<span id="gold">5000</span>
+
 |
-💎 <span id="gem">50</span>
+
+💎
+<span id="gem">50</span>
+</div>
+
+</div>
+
+</div>
+
+<div class="card">
+
+⭐ 경험치
+
+<div class="bar">
+
+<div
+id="expBar"
+class="fill">
+</div>
 
 </div>
 
@@ -125,29 +215,82 @@ background:lime;
 🐉 월드보스
 
 <div class="bar">
-<div id="boss" class="fill"></div>
+
+<div
+id="bossBar"
+class="fill">
+</div>
+
+</div>
+
+<div style="
+text-align:center;
+margin-top:10px;
+">
+
+보스 단계 :
+<span id="bossLevel">
+1
+</span>
+
 </div>
 
 </div>
 
 <div class="card grid">
 
-<button id="hunt">⚔️ 사냥</button>
-<button id="upgradeBtn">🔥 강화</button>
+<button id="huntBtn">
+⚔️ 사냥
+</button>
 
-<button id="quest">📜 퀘스트</button>
-<button id="gacha">🎰 가챠</button>
+<button id="upgradeBtn">
+🔥 강화
+</button>
 
-<button id="pvp">🏆 PVP</button>
-<button id="raid">🐉 보스</button>
+<button id="questBtn">
+📜 퀘스트
+</button>
+
+<button id="gachaBtn">
+🎰 가챠
+</button>
+
+<button id="pvpBtn">
+🏆 PVP
+</button>
+
+<button id="bossBtn">
+🐉 보스
+</button>
 
 </div>
 
 <div class="card">
 
-<h3>로그</h3>
+<h3>
+🎒 인벤토리
+</h3>
 
-<div id="log"></div>
+<div id="inventory">
+
+<div class="weapon-card">
+🗡️ 낡은 검
+(장착중)
+</div>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h3>
+📜 로그
+</h3>
+
+<div id="log">
+게임 시작...
+</div>
 
 </div>
 
@@ -155,225 +298,606 @@ background:lime;
 
 <script>
 
-let gold = 5000;
-let gem = 50;
-let upgrade = 0;
-let boss = 100;
+const SAVE_KEY =
+"dopamine_forge_v3";
 
-const forms = [
-"🗡️",
-"⚔️",
-"🔥⚔️",
-"⚡⚔️",
-"🌈⚔️",
-"👑⚔️",
-"🌌⚔️"
-];
+let game = {
 
-function power(){
-return 10 + (upgrade * 15);
+gold:5000,
+
+gem:50,
+
+level:1,
+
+exp:0,
+
+upgrade:0,
+
+bossHP:100,
+
+bossLevel:1,
+
+combo:0,
+
+inventory:[
+{
+name:"낡은 검",
+icon:"🗡️",
+power:10,
+rarity:"Common"
+}
+],
+
+equipped:0
+
+};
+
+try{
+
+const saveData =
+localStorage.getItem(
+SAVE_KEY
+);
+
+if(saveData){
+
+game =
+JSON.parse(saveData);
+
 }
 
-function effect(text,color="gold"){
+}catch(e){}
 
-const p = document.getElementById("popup");
+const rarityColor = {
 
-p.innerText = text;
-p.style.color = color;
+Common:"#cccccc",
+Rare:"#55aaff",
+Epic:"#aa66ff",
+Legendary:"#ffaa00",
+Mythic:"#ff44ff"
 
-p.classList.remove("show");
-void p.offsetWidth;
-p.classList.add("show");
+};
+
+function save(){
+
+try{
+
+localStorage.setItem(
+SAVE_KEY,
+JSON.stringify(game)
+);
+
+}catch(e){}
 
 }
 
-function log(text){
+function effect(
+text,
+color="gold"
+){
+
+const popup =
+document.getElementById(
+"popup"
+);
+
+popup.innerText =
+text;
+
+popup.style.color =
+color;
+
+popup.classList.remove(
+"show"
+);
+
+void popup.offsetWidth;
+
+popup.classList.add(
+"show"
+);
+
+if(
+navigator.vibrate
+){
+
+navigator.vibrate(
+80
+);
+
+}
+
+}
+
+function log(
+text
+){
 
 const target =
-document.getElementById("log");
+document.getElementById(
+"log"
+);
 
 target.innerHTML =
-"<div>"+text+"</div>" +
+"<div>" +
+text +
+"</div>"
++
 target.innerHTML;
+
+}
+
+function currentWeapon(){
+
+return game.inventory[
+game.equipped
+];
+
+}
+
+function power(){
+
+return Math.floor(
+
+currentWeapon().power
+
++
+
+(game.level * 5)
+
++
+
+(game.upgrade * 15)
+
+);
+
+}
+
+function addExp(
+value
+){
+
+game.exp += value;
+
+while(
+
+game.exp >=
+game.level * 100
+
+){
+
+game.exp -=
+game.level * 100;
+
+game.level++;
+
+game.gold +=
+1000;
+
+effect(
+"LEVEL UP!",
+"#00ff66"
+);
+
+log(
+"⭐ 레벨업 "
++
+game.level
+);
+
+}
+
+}
+
+function renderInventory(){
+
+const target =
+document.getElementById(
+"inventory"
+);
+
+target.innerHTML = "";
+
+game.inventory.forEach(
+
+(item,index)=>{
+
+const div =
+document.createElement(
+"div"
+);
+
+div.className =
+"weapon-card";
+
+if(
+item.rarity
+===
+"Legendary"
+){
+div.classList.add(
+"legendary"
+);
+}
+
+if(
+item.rarity
+===
+"Mythic"
+){
+div.classList.add(
+"mythic"
+);
+}
+
+div.innerHTML =
+
+item.icon
++
+" "
++
+item.name
+
++
+"<br>"
+
++
+item.rarity
+
++
+" | 공격력 "
+
++
+item.power
+
++
+(
+index ===
+game.equipped
+
+?
+
+" (장착중)"
+
+:
+
+""
+
+);
+
+div.onclick =
+
+function(){
+
+game.equipped =
+index;
+
+effect(
+"EQUIPPED",
+"#55aaff"
+);
+
+draw();
+
+};
+
+target.appendChild(
+div
+);
+
+}
+
+);
 
 }
 
 function draw(){
 
-document.getElementById("gold").innerText =
-gold;
+document
+.getElementById(
+"upgrade"
+)
+.innerText =
+game.upgrade;
 
-document.getElementById("gem").innerText =
-gem;
+document
+.getElementById(
+"level"
+)
+.innerText =
+game.level;
 
-document.getElementById("upgrade").innerText =
-upgrade;
+document
+.getElementById(
+"exp"
+)
+.innerText =
+game.exp;
 
-document.getElementById("power").innerText =
+document
+.getElementById(
+"maxExp"
+)
+.innerText =
+game.level
+*
+100;
+
+document
+.getElementById(
+"power"
+)
+.innerText =
 power();
 
-document.getElementById("boss").style.width =
-boss + "%";
-
-document.getElementById("weapon").innerText =
-forms[
-Math.min(
-forms.length-1,
-Math.floor(upgrade/10)
+document
+.getElementById(
+"gold"
 )
-];
+.innerText =
+Math.floor(
+game.gold
+);
+
+document
+.getElementById(
+"gem"
+)
+.innerText =
+game.gem;
+
+document
+.getElementById(
+"weapon"
+)
+.innerText =
+
+currentWeapon()
+.icon;
+
+document
+.getElementById(
+"expBar"
+)
+.style.width =
+
+(
+game.exp
+/
+(
+game.level
+*
+100
+)
+)
+*
+100
+
++
+
+"%";
+
+document
+.getElementById(
+"bossBar"
+)
+.style.width =
+
+game.bossHP
+
++
+
+"%";
+
+document
+.getElementById(
+"bossLevel"
+)
+.innerText =
+
+game.bossLevel;
+
+renderInventory();
+
+save();
 
 }
 
-document.getElementById("hunt")
-.addEventListener("click",function(){
+function upgradeWeapon(){
 
-let reward =
-100 + Math.floor(Math.random()*300);
+const cost =
 
-gold += reward;
+(
+game.upgrade
++
+1
+)
 
-effect("CRIT!","#00ff66");
+*
+300;
 
-log("⚔️ 사냥 +" + reward);
+if(
+game.gold
+<
+cost
+){
 
-draw();
+effect(
+"NO GOLD",
+"red"
+);
 
-});
-
-document.getElementById("quest")
-.addEventListener("click",function(){
-
-let reward =
-500 + Math.floor(Math.random()*1000);
-
-gold += reward;
-gem += 2;
-
-effect("QUEST");
-
-log("📜 퀘스트 +" + reward);
-
-draw();
-
-});
-
-document.getElementById("upgradeBtn")
-.addEventListener("click",function(){
-
-let cost =
-(upgrade+1) * 200;
-
-if(gold < cost){
-
-effect("NO GOLD","red");
 return;
 
 }
 
-gold -= cost;
+game.gold -=
+cost;
 
-if(Math.random()*100 <
-Math.max(25,95-upgrade)
+const chance =
+
+Math.max(
+20,
+95 -
+game.upgrade
+);
+
+if(
+
+Math.random()
+*
+100
+
+<
+chance
+
 ){
 
-upgrade++;
-effect("SUCCESS","#00ff66");
+game.upgrade++;
+
+game.combo++;
+
+effect(
+"SUCCESS",
+"#00ff66"
+);
+
+if(
+game.combo >= 3
+){
+
+effect(
+game.combo
++
+" COMBO!",
+"#ffaa00"
+);
+
+}
 
 }else{
 
-effect("FAIL","red");
+game.combo = 0;
+
+effect(
+"FAIL",
+"#ff4444"
+);
 
 }
 
 draw();
 
-});
+}
 
-document.getElementById("gacha")
-.addEventListener("click",function(){
+function gacha(){
 
-if(gem < 10){
+if(
+game.gem < 10
+){
 
-effect("NO GEM","red");
+effect(
+"NO GEM",
+"red"
+);
+
 return;
 
 }
 
-gem -= 10;
+game.gem -= 10;
 
-let r = Math.random();
+const r =
+Math.random();
 
-if(r < 0.02){
+let item;
 
-upgrade += 5;
-effect("MYTHIC","orange");
+if(
+r < 0.01
+){
+
+item = {
+
+name:"창세검",
+icon:"🌌",
+power:800,
+rarity:"Mythic"
+
+};
 
 }
-else if(r < 0.20){
+else if(
+r < 0.05
+){
 
-upgrade += 2;
-effect("SSR","violet");
+item = {
+
+name:"용검",
+icon:"🐉",
+power:400,
+rarity:"Legendary"
+
+};
+
+}
+else if(
+r < 0.20
+){
+
+item = {
+
+name:"마검",
+icon:"🔥",
+power:150,
+rarity:"Epic"
+
+};
+
+}
+else if(
+r < 0.50
+){
+
+item = {
+
+name:"기사검",
+icon:"⚔️",
+power:60,
+rarity:"Rare"
+
+};
 
 }
 else{
 
-gold += 2000;
-effect("BONUS");
+item = {
+
+name:"낡은 검",
+icon:"🗡️",
+power:10,
+rarity:"Common"
+
+};
 
 }
 
-draw();
-
-});
-
-document.getElementById("pvp")
-.addEventListener("click",function(){
-
-if(Math.random()<0.5){
-
-gold += 1500;
-effect("WIN","lime");
-
-}else{
-
-gold += 500;
-effect("LOSE");
-
-}
-
-draw();
-
-});
-
-document.getElementById("raid")
-.addEventListener("click",function(){
-
-boss -= Math.max(
-5,
-Math.floor(power()/25)
+game.inventory.push(
+item
 );
 
-if(boss <= 0){
+effect(
+item.rarity,
+rarityColor[
+item.rarity
+]
+);
 
-boss = 100;
+log(
+"🎰 "
++
+item.name
++
+" 획득"
+);
 
-gold += 10000;
-gem += 20;
-
-effect("BOSS DOWN","orange");
-
-log("🐉 보스 처치");
-
-}
-
-draw();
-
-});
-
-draw();
-
-</script>
-
-</body>
-</html>
+draw
