@@ -3,14 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Dopamine Forge</title>
+
+<title>Dopamine Forge v1</title>
 
 <style>
+
 body{
 margin:0;
 background:#0d1228;
 color:white;
-font-family:sans-serif;
+font-family:Arial,sans-serif;
 }
 
 header{
@@ -22,10 +24,10 @@ font-weight:bold;
 }
 
 .card{
-background:#1e2b58;
+background:#1f2c5c;
 margin:10px;
 padding:15px;
-border-radius:16px;
+border-radius:15px;
 }
 
 .weapon{
@@ -33,59 +35,36 @@ font-size:90px;
 text-align:center;
 }
 
-.center{
+.stats{
 text-align:center;
-}
-
-button{
-width:100%;
-height:60px;
-border:none;
-border-radius:12px;
-margin-top:5px;
-font-size:17px;
-font-weight:bold;
-background:#4f7cff;
-color:white;
+line-height:2;
 }
 
 .grid{
 display:grid;
 grid-template-columns:1fr 1fr;
-gap:8px;
+gap:10px;
 }
 
-.log{
-height:180px;
-overflow:auto;
-}
-
-.bar{
-height:24px;
-background:#333;
-border-radius:20px;
-overflow:hidden;
-}
-
-.fill{
-height:100%;
-background:linear-gradient(
-90deg,
-#22c55e,
-#84cc16
-);
-width:100%;
-}
-
-.popup{
-position:fixed;
-left:50%;
-top:45%;
-transform:translate(-50%,-50%);
-font-size:38px;
+button{
+height:60px;
+border:none;
+border-radius:12px;
+font-size:16px;
 font-weight:bold;
-pointer-events:none;
+background:#4f7cff;
+color:white;
+}
+
+#popup{
+position:fixed;
+top:45%;
+left:50%;
+transform:translate(-50%,-50%);
+font-size:36px;
+font-weight:bold;
 opacity:0;
+pointer-events:none;
 }
 
 .show{
@@ -93,12 +72,308 @@ animation:pop 1s;
 }
 
 @keyframes pop{
-
-0%{
-opacity:0;
-transform:translate(-50%,-50%) scale(.5);
+0%{opacity:0;transform:translate(-50%,-50%) scale(.5);}
+40%{opacity:1;transform:translate(-50%,-50%) scale(1.4);}
+100%{opacity:0;transform:translate(-50%,-70%) scale(1);}
 }
 
-40%{
-opacity:1;
-transform:translate(-
+#log{
+height:180px;
+overflow:auto;
+}
+
+.bar{
+height:22px;
+background:#333;
+border-radius:20px;
+overflow:hidden;
+}
+
+.fill{
+width:100%;
+height:100%;
+background:lime;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>⚔️ Dopamine Forge</header>
+
+<div class="card">
+
+<div id="weapon" class="weapon">🗡️</div>
+
+<div class="stats">
+
+강화 +<span id="upgrade">0</span><br>
+
+전투력 <span id="power">10</span><br>
+
+💰 <span id="gold">5000</span>
+|
+💎 <span id="gem">50</span>
+
+</div>
+
+</div>
+
+<div class="card">
+
+🐉 월드보스
+
+<div class="bar">
+<div id="boss" class="fill"></div>
+</div>
+
+</div>
+
+<div class="card grid">
+
+<button id="hunt">⚔️ 사냥</button>
+<button id="upgradeBtn">🔥 강화</button>
+
+<button id="quest">📜 퀘스트</button>
+<button id="gacha">🎰 가챠</button>
+
+<button id="pvp">🏆 PVP</button>
+<button id="raid">🐉 보스</button>
+
+</div>
+
+<div class="card">
+
+<h3>로그</h3>
+
+<div id="log"></div>
+
+</div>
+
+<div id="popup"></div>
+
+<script>
+
+let gold = 5000;
+let gem = 50;
+let upgrade = 0;
+let boss = 100;
+
+const forms = [
+"🗡️",
+"⚔️",
+"🔥⚔️",
+"⚡⚔️",
+"🌈⚔️",
+"👑⚔️",
+"🌌⚔️"
+];
+
+function power(){
+return 10 + (upgrade * 15);
+}
+
+function effect(text,color="gold"){
+
+const p = document.getElementById("popup");
+
+p.innerText = text;
+p.style.color = color;
+
+p.classList.remove("show");
+void p.offsetWidth;
+p.classList.add("show");
+
+}
+
+function log(text){
+
+const target =
+document.getElementById("log");
+
+target.innerHTML =
+"<div>"+text+"</div>" +
+target.innerHTML;
+
+}
+
+function draw(){
+
+document.getElementById("gold").innerText =
+gold;
+
+document.getElementById("gem").innerText =
+gem;
+
+document.getElementById("upgrade").innerText =
+upgrade;
+
+document.getElementById("power").innerText =
+power();
+
+document.getElementById("boss").style.width =
+boss + "%";
+
+document.getElementById("weapon").innerText =
+forms[
+Math.min(
+forms.length-1,
+Math.floor(upgrade/10)
+)
+];
+
+}
+
+document.getElementById("hunt")
+.addEventListener("click",function(){
+
+let reward =
+100 + Math.floor(Math.random()*300);
+
+gold += reward;
+
+effect("CRIT!","#00ff66");
+
+log("⚔️ 사냥 +" + reward);
+
+draw();
+
+});
+
+document.getElementById("quest")
+.addEventListener("click",function(){
+
+let reward =
+500 + Math.floor(Math.random()*1000);
+
+gold += reward;
+gem += 2;
+
+effect("QUEST");
+
+log("📜 퀘스트 +" + reward);
+
+draw();
+
+});
+
+document.getElementById("upgradeBtn")
+.addEventListener("click",function(){
+
+let cost =
+(upgrade+1) * 200;
+
+if(gold < cost){
+
+effect("NO GOLD","red");
+return;
+
+}
+
+gold -= cost;
+
+if(Math.random()*100 <
+Math.max(25,95-upgrade)
+){
+
+upgrade++;
+effect("SUCCESS","#00ff66");
+
+}else{
+
+effect("FAIL","red");
+
+}
+
+draw();
+
+});
+
+document.getElementById("gacha")
+.addEventListener("click",function(){
+
+if(gem < 10){
+
+effect("NO GEM","red");
+return;
+
+}
+
+gem -= 10;
+
+let r = Math.random();
+
+if(r < 0.02){
+
+upgrade += 5;
+effect("MYTHIC","orange");
+
+}
+else if(r < 0.20){
+
+upgrade += 2;
+effect("SSR","violet");
+
+}
+else{
+
+gold += 2000;
+effect("BONUS");
+
+}
+
+draw();
+
+});
+
+document.getElementById("pvp")
+.addEventListener("click",function(){
+
+if(Math.random()<0.5){
+
+gold += 1500;
+effect("WIN","lime");
+
+}else{
+
+gold += 500;
+effect("LOSE");
+
+}
+
+draw();
+
+});
+
+document.getElementById("raid")
+.addEventListener("click",function(){
+
+boss -= Math.max(
+5,
+Math.floor(power()/25)
+);
+
+if(boss <= 0){
+
+boss = 100;
+
+gold += 10000;
+gem += 20;
+
+effect("BOSS DOWN","orange");
+
+log("🐉 보스 처치");
+
+}
+
+draw();
+
+});
+
+draw();
+
+</script>
+
+</body>
+</html>
