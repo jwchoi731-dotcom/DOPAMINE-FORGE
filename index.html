@@ -1,27 +1,104 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Dopamine Forge</title>
-</head>
-<body style="background:#111;color:white;text-align:center;font-family:sans-serif">
 
-<h1>⚔️ Dopamine Forge</h1>
+<style>
+body{
+margin:0;
+background:#0d1228;
+color:white;
+font-family:sans-serif;
+}
 
-<div id="gold">Gold: 5000</div>
+header{
+background:#1b2550;
+padding:15px;
+text-align:center;
+font-size:28px;
+font-weight:bold;
+}
 
-<button id="hunt">사냥</button>
+.card{
+background:#1e2b58;
+margin:10px;
+padding:15px;
+border-radius:16px;
+}
 
-<script>
-let gold = 5000;
+.weapon{
+font-size:90px;
+text-align:center;
+}
 
-document.getElementById("hunt").addEventListener("click", () => {
-  gold += 100;
-  document.getElementById("gold").innerText = "Gold: " + gold;
-  alert("+100 골드!");
-});
-</script>
+.center{
+text-align:center;
+}
 
-</body>
-</html>
+button{
+width:100%;
+height:60px;
+border:none;
+border-radius:12px;
+margin-top:5px;
+font-size:17px;
+font-weight:bold;
+background:#4f7cff;
+color:white;
+}
+
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:8px;
+}
+
+.log{
+height:180px;
+overflow:auto;
+}
+
+.bar{
+height:24px;
+background:#333;
+border-radius:20px;
+overflow:hidden;
+}
+
+.fill{
+height:100%;
+background:linear-gradient(
+90deg,
+#22c55e,
+#84cc16
+);
+width:100%;
+}
+
+.popup{
+position:fixed;
+left:50%;
+top:45%;
+transform:translate(-50%,-50%);
+font-size:38px;
+font-weight:bold;
+pointer-events:none;
+opacity:0;
+}
+
+.show{
+animation:pop 1s;
+}
+
+@keyframes pop{
+
+0%{
+opacity:0;
+transform:translate(-50%,-50%) scale(.5);
+}
+
+40%{
+opacity:1;
+transform:translate(-
