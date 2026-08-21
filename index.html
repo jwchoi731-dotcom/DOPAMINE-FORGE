@@ -900,4 +900,304 @@ item.name
 " 획득"
 );
 
-draw
+draw();
+
+  }
+  function hunt(){
+
+const reward =
+100 +
+Math.floor(Math.random()*300) +
+Math.floor(power()/5);
+
+game.gold += reward;
+
+addExp(10);
+
+effect(
+"CRIT!",
+"#00ff66"
+);
+
+log(
+"⚔️ 사냥 +" +
+reward +
+" 골드"
+);
+
+draw();
+
+}
+
+function quest(){
+
+const reward =
+500 +
+Math.floor(Math.random()*1000);
+
+game.gold += reward;
+game.gem += 2;
+
+addExp(25);
+
+effect(
+"QUEST CLEAR",
+"#55aaff"
+);
+
+log(
+"📜 퀘스트 +" +
+reward +
+" 골드"
+);
+
+draw();
+
+}
+
+function pvp(){
+
+if(Math.random() < 0.5){
+
+const reward =
+1000 +
+Math.floor(power()*2);
+
+game.gold += reward;
+
+effect(
+"VICTORY",
+"#00ff66"
+);
+
+log(
+"🏆 승리 +" +
+reward +
+" 골드"
+);
+
+}
+else{
+
+const reward = 500;
+
+game.gold += reward;
+
+effect(
+"DEFEAT BONUS",
+"#ffaa00"
+);
+
+log(
+"😅 패배 보상 +" +
+reward +
+" 골드"
+);
+
+}
+
+addExp(15);
+
+draw();
+
+}
+
+function bossRaid(){
+
+const damage =
+Math.max(
+5,
+Math.floor(power()/20)
+);
+
+game.bossHP -= damage;
+
+effect(
+"-" + damage,
+"#ff4444"
+);
+
+if(game.bossHP <= 0){
+
+const reward =
+5000 *
+game.bossLevel;
+
+game.gold += reward;
+game.gem += 10;
+
+effect(
+"🐉 BOSS DOWN",
+"#ffaa00"
+);
+
+log(
+"🐉 보스 처치!"
+);
+
+log(
+"💰 +" +
+reward +
+" 골드"
+);
+
+game.bossLevel++;
+game.bossHP = 100;
+
+}
+
+draw();
+
+}
+
+function offlineReward(){
+
+const now =
+Date.now();
+
+const last =
+localStorage.getItem(
+"dopamine_last"
+);
+
+if(last){
+
+const diff =
+Math.floor(
+(now-last)/1000
+);
+
+const reward =
+Math.min(
+50000,
+diff*2
+);
+
+if(reward > 0){
+
+game.gold += reward;
+
+log(
+"💰 오프라인 보상 +" +
+reward
+);
+
+}
+
+}
+
+localStorage.setItem(
+"dopamine_last",
+now
+);
+
+}
+
+setInterval(function(){
+
+const reward =
+50 +
+Math.floor(power()/5);
+
+game.gold += reward;
+
+log(
+"🤖 자동사냥 +" +
+reward
+);
+
+draw();
+
+},5000);
+
+setInterval(function(){
+
+if(Math.random()<0.02){
+
+const reward = 10000;
+
+game.gold += reward;
+
+effect(
+"💰 JACKPOT!",
+"#ffd700"
+);
+
+log(
+"🎉 잭팟 +" +
+reward +
+" 골드"
+);
+
+draw();
+
+}
+
+},10000);
+
+document
+.getElementById(
+"huntBtn"
+)
+.addEventListener(
+"click",
+hunt
+);
+
+document
+.getElementById(
+"questBtn"
+)
+.addEventListener(
+"click",
+quest
+);
+
+document
+.getElementById(
+"upgradeBtn"
+)
+.addEventListener(
+"click",
+upgradeWeapon
+);
+
+document
+.getElementById(
+"gachaBtn"
+)
+.addEventListener(
+"click",
+gacha
+);
+
+document
+.getElementById(
+"pvpBtn"
+)
+.addEventListener(
+"click",
+pvp
+);
+
+document
+.getElementById(
+"bossBtn"
+)
+.addEventListener(
+"click",
+bossRaid
+);
+
+offlineReward();
+
+draw();
+
+log(
+"🎮 Dopamine Forge V3 시작!"
+);
+
+</script>
+
+</body>
+</html>
